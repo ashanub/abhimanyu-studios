@@ -50,13 +50,13 @@
                     <b-navbar-item href="/photography">
                         Photography
                     </b-navbar-item>
-                    <b-navbar-item href="/videography">
+                    <b-navbar-item href="#">
                         Videography
                     </b-navbar-item>
-                    <b-navbar-item href="#">
+                    <b-navbar-item tag="router-link" :to="{ path: '/#about' }">
                         About Me
                     </b-navbar-item>
-                    <b-navbar-item href="#">
+                    <b-navbar-item tag="router-link" :to="{ path: '/#contact' }">
                         Contact Me
                     </b-navbar-item>
                 </template>
