@@ -128,18 +128,22 @@
     created () {
       this.calculateSectionOffsets()
 
-      window.addEventListener('DOMMouseScroll', this.handleMouseWheelDOM)  // Mozilla Firefox
-      window.addEventListener('mousewheel', this.handleMouseWheel, { passive: false }) // Other browsers
+      if (process.isClient) {
+        window.addEventListener('DOMMouseScroll', this.handleMouseWheelDOM)  // Mozilla Firefox
+        window.addEventListener('mousewheel', this.handleMouseWheel, { passive: false }) // Other browsers
 
-      window.addEventListener('touchstart', this.touchStart, { passive: false }) // mobile devices
-      window.addEventListener('touchmove', this.touchMove, { passive: false }) // mobile devices
+        window.addEventListener('touchstart', this.touchStart, { passive: false }) // mobile devices
+        window.addEventListener('touchmove', this.touchMove, { passive: false }) // mobile devices
+      }
     },
     destroyed () {
-      window.removeEventListener('mousewheel', this.handleMouseWheel, { passive: false })  // Other browsers
-      window.removeEventListener('DOMMouseScroll', this.handleMouseWheelDOM) // Mozilla Firefox
+      if (process.isClient) {
+        window.removeEventListener('mousewheel', this.handleMouseWheel, { passive: false })  // Other browsers
+        window.removeEventListener('DOMMouseScroll', this.handleMouseWheelDOM) // Mozilla Firefox
 
-      window.removeEventListener('touchstart', this.touchStart) // mobile devices
-      window.removeEventListener('touchmove', this.touchMove) // mobile devices
+        window.removeEventListener('touchstart', this.touchStart) // mobile devices
+        window.removeEventListener('touchmove', this.touchMove) // mobile devices
+      }
     },
   }
 </script>
