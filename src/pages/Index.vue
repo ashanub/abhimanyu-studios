@@ -1,14 +1,16 @@
 <template>
     <Layout>
-        <section class="fullpage" id="featured">
-            <FeaturedImages/>
-        </section>
-        <section class="fullpage" id="about">
-            <AboutMe v-on:aboutModalState="sectionScroll($event)"/>
-        </section>
-        <section class="fullpage" id="contact">
-            <Contact/>
-        </section>
+        <ClientOnly>
+            <section class="fullpage" id="featured">
+                <FeaturedImages/>
+            </section>
+            <section class="fullpage" id="about">
+                <AboutMe v-on:aboutModalState="sectionScroll($event)"/>
+            </section>
+            <section class="fullpage" id="contact">
+                <Contact/>
+            </section>
+        </ClientOnly>
     </Layout>
 </template>
 
