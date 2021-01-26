@@ -1,16 +1,14 @@
 <template>
     <Layout>
-        <ClientOnly>
-            <section class="fullpage" id="featured">
-                <FeaturedImages/>
-            </section>
-            <section class="fullpage" id="about">
-                <AboutMe v-on:aboutModalState="sectionScroll($event)"/>
-            </section>
-            <section class="fullpage" id="contact">
-                <Contact/>
-            </section>
-        </ClientOnly>
+        <section class="fullpage" id="featured">
+            <FeaturedImages/>
+        </section>
+        <section class="fullpage" id="about">
+            <AboutMe v-on:aboutModalState="sectionScroll($event)"/>
+        </section>
+        <section class="fullpage" id="contact">
+            <Contact/>
+        </section>
     </Layout>
 </template>
 
@@ -29,7 +27,7 @@
         activeSection: 0,
         offsets: [],
         touchStartY: 0,
-        sectionScrollState: true
+        sectionScrollState: true,
       }
     },
     components: {
@@ -38,20 +36,22 @@
       Contact,
     },
     methods: {
-      sectionScroll(theEvent){
+      sectionScroll (theEvent) {
         this.sectionScrollState = !theEvent
       },
       calculateSectionOffsets () {
-        let sections = document.getElementsByTagName('section')
-        let length = sections.length
+        if (process.isClient) {
+          let sections = document.getElementsByTagName('section')
+          let length = sections.length
 
-        for (let i = 0; i < length; i++) {
-          let sectionOffset = sections[i].offsetTop
-          this.offsets.push(sectionOffset)
+          for (let i = 0; i < length; i++) {
+            let sectionOffset = sections[i].offsetTop
+            this.offsets.push(sectionOffset)
+          }
         }
       },
       handleMouseWheel: function (e) {
-        if (this.sectionScrollState){
+        if (this.sectionScrollState) {
           if (e.wheelDelta < 30 && !this.inMove) {
             this.moveUp()
           } else if (e.wheelDelta > 30 && !this.inMove) {
@@ -75,16 +75,18 @@
       moveDown () {
         this.inMove = true
         this.activeSection--
-
-        if (this.activeSection < 0) this.activeSection = (document.querySelectorAll('.fullpage').length * 2) - 1
+        if (process.isClient) {
+          if (this.activeSection < 0) this.activeSection = (document.querySelectorAll('.fullpage').length * 2) - 1
+        }
 
         this.scrollToSection(this.activeSection, true)
       },
       moveUp () {
         this.inMove = true
         this.activeSection++
-
-        if (this.activeSection > (document.querySelectorAll('.fullpage').length * 2) - 1) this.activeSection = 0
+        if (process.isClient) {
+          if (this.activeSection > (document.querySelectorAll('.fullpage').length * 2) - 1) this.activeSection = 0
+        }
 
         this.scrollToSection(this.activeSection, true)
       },
@@ -93,8 +95,9 @@
 
         this.activeSection = id
         this.inMove = true
-
-        document.getElementsByTagName('section')[id].scrollIntoView({ behavior: 'smooth' })
+        if (process.isClient) {
+          document.getElementsByTagName('section')[id].scrollIntoView({ behavior: 'smooth' })
+        }
 
         setTimeout(() => {
           this.inMove = false
